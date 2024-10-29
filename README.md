@@ -25,11 +25,11 @@ Don't trust me? Run it yourself in [The Go Playground](https://go.dev/play/p/BUU
 
 #### 💡 Explanation
 
-The len("string") function in Go returns the number of bytes, not the actual count of characters in a string. While this often coincides with the character count for ASCII strings (where each character is 1 byte), it can be misleading when dealing with Unicode characters, which may occupy more than one byte.
+The `len("string")` function in Go returns the number of bytes, not the actual count of characters in a string. While this often coincides with the character count for ASCII strings (where each character is 1 byte), it can be misleading when dealing with Unicode characters, which may occupy more than one byte.
 
-In this example character і (the Cyrillic letter “і”) is encoded in UTF-8 as two bytes, while the other characters F, v, and e are single-byte ASCII characters.
+In this example character `і` (the Cyrillic letter “і”) is encoded in UTF-8 as two bytes, while the other characters F, v, and e are single-byte ASCII characters.
 
-When dealing with multilingual strings or special characters, len might not give an accurate character count. To get the actual count of characters (or runes), you can use the utf8.RuneCountInString function from the unicode/utf8 package:
+When dealing with multilingual strings or special characters, len might not give an accurate character count. To get the actual count of characters (or runes), you can use the `utf8.RuneCountInString` function from the `unicode/utf8` package:
 
 ```go
 import (
@@ -86,6 +86,46 @@ Example available in [The Go Playground](https://go.dev/play/p/sg78qnOtqpe)
 
 #### 💡 Explanation
 
-Ok it's 2 AM and I'm going to bed now. I'll update this tomorrow. 😴
+In `returnMyError`, we set `err` to `nil` as a `MyError` pointer and return it as an error interface. Here’s the catch: when we do this, the error interface keeps track of both the `MyError` type and the `nil` value. So, even though the value is `nil`, the interface itself isn’t fully empty — it still knows it should hold a `MyError` type. That’s why, when we check `if err == nil` in main, Go says it’s not `nil` because the interface has type information. In short, `nil != nil` here because the interface has a type, even though the value is nil.
+
+```go
+package main
+
+import (
+  "fmt"
+  "reflect"
+)
+
+type MyError struct{}
+
+func (c MyError) Error() string {
+  return "I ❤️ Golang"
+}
+
+func returnMyError() error {
+  var err *MyError = nil
+  return err
+}
+
+func main() {
+  err := returnMyError()
+  fmt.Printf("Value of err: %v\n", err) // Prints <nil>
+  fmt.Printf("Type of err: %T\n", err) // Shows that err has type *MyError
+
+  if err == nil {
+    fmt.Println("err is nil")
+  } else {
+    fmt.Println("err is NOT nil")
+  }
+}
+```
+
+**Output**
+
+```go
+Value of err: <nil>
+Type of err: *main.MyError
+err is NOT nil
+```
 
 ---
