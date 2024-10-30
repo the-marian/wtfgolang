@@ -46,6 +46,39 @@ In this case, `utf8.RuneCountInString("Fіve")` correctly returns 4, reflecting 
 
 ---
 
+### ❓`range`, Why Can’t You Be Like the Other Kids?
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+  s := "Hі!"
+  for char := range s {
+    fmt.Println(char)
+  }
+}
+```
+
+**Output**
+
+```go
+0
+1
+3
+```
+
+Like, why indexes instead of characters? Why would you skip 2? 😅 Why can’t you just be like the other kids?
+
+Example available in [The Go Playground](https://go.dev/play/p/TlHnZc84Yqp)
+
+#### 💡 Explanation
+
+Just keep in mind that the output is not the characters of the string. It's the byte index of the string.
+
+---
+
 ### ❓When `nil != nil`
 
 ```go
