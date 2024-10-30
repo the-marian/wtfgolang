@@ -79,6 +79,39 @@ Just keep in mind that the output is not the characters of the string. It's the 
 
 ---
 
+### ❓`range`, Why Can’t You Be Like the Other Kids? (Part 2)
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+  s := "Hі!"
+  for _, char := range s {
+    fmt.Println(char)
+  }
+}
+```
+
+**Output**
+
+```go
+72
+1110
+33
+```
+
+No, seriously, why are you like this? 😂
+
+Example available in [The Go Playground](https://go.dev/play/p/c_eAwsGYJRE)
+
+#### 💡 Explanation
+
+Anyone? Help?
+
+---
+
 ### ❓When `nil != nil`
 
 ```go
