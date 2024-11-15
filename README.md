@@ -195,3 +195,40 @@ err is NOT nil
 ```
 
 ---
+
+### ❓Slicing slices in Go might be a bit tricky
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+ a := []int{1, 2, 3}
+ b := a[:1]
+
+ fmt.Println(a) // [1 2 3]
+ fmt.Println(b) // [1]
+
+ c := b[:3]
+ fmt.Println(c) // ???
+}
+```
+
+**Output**
+
+```go
+[1 2 3]
+[1]
+[1 2 3]
+```
+
+No comments 😅
+
+Example available in [The Go Playground](https://go.dev/play/p/96HhnPJ_77K)
+
+#### 💡 Explanation
+
+Anyone? Help?
+
+---
