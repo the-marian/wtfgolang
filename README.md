@@ -2,6 +2,14 @@
 
 What the f\*ck Golang? 🤨
 
+## Table of Contents
+
+- [❓len("string") is Not Really the Length of a String](#lenstring-is-not-really-the-length-of-a-string)
+- [❓range, Why Can’t You Be Like the Other Kids?](#range-why-cant-you-be-like-the-other-kids)
+- [❓range, Why Can’t You Be Like the Other Kids? (Part 2)](#range-why-cant-you-be-like-the-other-kids-part-2)
+- [❓When nil \!= nil](#when-nil--nil)
+- [❓Slicing slices in Go might be a bit tricky](#slicing-slices-in-go-might-be-a-bit-tricky)
+
 ### ❓`len("string")` is Not Really the Length of a String
 
 ```go
