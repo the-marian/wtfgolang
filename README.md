@@ -9,6 +9,7 @@ What the f\*ck Golang? 🤨
 - [❓range, Why Can’t You Be Like the Other Kids? (Part 2)](#range-why-cant-you-be-like-the-other-kids-part-2)
 - [❓When nil \!= nil](#when-nil--nil)
 - [❓Slicing slices in Go might be a bit tricky](#slicing-slices-in-go-might-be-a-bit-tricky)
+- [❓Named return values in Go might be a bit tricky](#named-return-values-in-go-might-be-a-bit-tricky)
 
 ### ❓`len("string")` is Not Really the Length of a String
 
@@ -240,3 +241,108 @@ Example available in [The Go Playground](https://go.dev/play/p/96HhnPJ_77K)
 Anyone? Help?
 
 ---
+
+### ❓Named return values in Go might be a bit tricky
+
+```go
+package main
+
+import (
+	"errors"
+	"fmt"
+)
+
+func doSomeWork() (string, error) {
+	return "", errors.New("some error")
+}
+
+func doSomeCleaning() error {
+	return nil
+}
+
+func run() (err error) {
+	_, err = doSomeWork()
+	fmt.Printf("error during calling doSomeWork() func: %+v\n", err)
+
+	defer func() {
+
+		if err = doSomeCleaning(); err != nil {
+			fmt.Println("something went wrong")
+		}
+		fmt.Printf("defer successful witout error. Error: %+v\n", err)
+
+	}()
+	return err
+}
+
+func main() {
+	fmt.Printf("Return from run() func: %+v", run())
+
+}
+```
+
+**Output**
+
+```go
+error during calling doSomeWork() func: some error
+defer successful without error. Error: <nil>
+Return from run() func: <nil>
+```
+
+No comments 😅
+
+Example available in [The Go Playground](https://go.dev/play/p/Moe1xZyd6Y2)
+
+btw, if you change the named return `err` to `var err error` in `run` function, the output will be different. Can you guess why?
+
+```go
+package main
+
+import (
+	"errors"
+	"fmt"
+)
+
+func doSomeWork() (string, error) {
+	return "", errors.New("some error")
+}
+
+func doSomeCleaning() error {
+	return nil
+}
+
+func run() error {
+	var err error
+	_, err = doSomeWork()
+	fmt.Printf("error during calling doSomeWork() func: %+v\n", err)
+
+	defer func() {
+
+		if err = doSomeCleaning(); err != nil {
+			fmt.Println("something went wrong")
+		}
+		fmt.Printf("defer successful witout error. Error: %+v\n", err)
+
+	}()
+	return err
+}
+
+func main() {
+	fmt.Printf("Return from run() func: %+v", run())
+
+}
+```
+
+Output:
+
+```go
+error during calling doSomeWork() func: some error
+defer successful witout error. Error: <nil>
+Return from run() func: some error
+```
+
+Example available in [The Go Playground](https://go.dev/play/p/0M1f0lxc6rf)
+
+#### 💡 Explanation
+
+Anyone? Help?
